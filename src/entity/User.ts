@@ -1,11 +1,17 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn} from "typeorm"
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity} from "typeorm"
 import {Address} from "./Address";
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     id: number
+
+    @Column()
+    password: string
+
+    @Column()
+    email: string
 
     @Column()
     cpf: string
@@ -18,7 +24,7 @@ export class User {
 
     @ManyToOne(() => Address,
         () => User,
-        {lazy: true})
+        {lazy: true, cascade: ["insert", "update"]})
     @JoinColumn({name: 'addressId', referencedColumnName: 'id'})
     address: Address;
 

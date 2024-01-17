@@ -8,7 +8,6 @@ export class PurchaseDetail {
     @PrimaryGeneratedColumn()
     id: number
 
-
     @Column()
     quantity: number
 
@@ -17,9 +16,6 @@ export class PurchaseDetail {
 
     @Column()
     productId: number
-
-    @Column()
-    purchaseId: number
 
     @ManyToOne(() => Product,
         () => PurchaseDetail,

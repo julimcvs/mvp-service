@@ -47,19 +47,6 @@ export default class QuotationService {
         throw new Error('Quotation not found.')
     }
 
-    private getQuotationDetail(quotation: Quotation, product: any, savedProduct: Product) {
-        const quotationDetail: QuotationDetail = new QuotationDetail();
-        quotationDetail.quotation = quotation;
-        quotationDetail.product = product;
-        if ([ProductTypeEnum.SERVICE, ProductTypeEnum.COMBO].includes(savedProduct.type)) {
-            quotationDetail.quantity = 1;
-        } else {
-            quotationDetail.quantity = product.quantity;
-        }
-        quotationDetail.subtotal = (quotationDetail.quantity * savedProduct.price);
-        return quotationDetail;
-    }
-
     quotation = async (req: Request, res: Response) => {
         const body = req.body;
         const products = body.products;
@@ -83,5 +70,18 @@ export default class QuotationService {
             id: quotation.id,
             totalAmount: quotation.totalAmount
         };
+    }
+
+    private getQuotationDetail(quotation: Quotation, product: any, savedProduct: Product) {
+        const quotationDetail: QuotationDetail = new QuotationDetail();
+        quotationDetail.quotation = quotation;
+        quotationDetail.product = product;
+        if ([ProductTypeEnum.SERVICE, ProductTypeEnum.COMBO].includes(savedProduct.type)) {
+            quotationDetail.quantity = 1;
+        } else {
+            quotationDetail.quantity = product.quantity;
+        }
+        quotationDetail.subtotal = (quotationDetail.quantity * savedProduct.price);
+        return quotationDetail;
     }
 }

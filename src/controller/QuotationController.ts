@@ -7,7 +7,7 @@ export default class QuotationController {
     addItem = async (req: Request, res: Response) => {
         const quotation = await this.service.addItem(req, res);
         res.status(200).send({
-            message: 'Quotation successful!',
+            message: 'Item added successfully!',
             id: quotation.id,
             totalAmount: `R$${quotation.totalAmount.toFixed(2)}`
         });

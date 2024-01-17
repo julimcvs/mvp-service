@@ -11,6 +11,16 @@ const port = process.env.PORT ?? 3000;
 dotenv.config();
 
 app.use(bodyParser.json())
+app.use(
+    bodyParser.urlencoded({
+        extended: true,
+    })
+);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(err);
+    res.status(500).send({ error: { message: "Something went wrong" }});
+});
 
 app.use(mainRouter);
 
@@ -21,10 +31,5 @@ app.listen(port, () => {
 AppDataSource.initialize().then(async () => {
     console.log('DB Connection initialized');
 }).catch(error => console.log(error))
-
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error(err);
-    res.status(500).send({ error: { message: "Something went wrong" }});
-});
 
 export default app;
