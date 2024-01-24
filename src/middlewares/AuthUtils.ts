@@ -16,8 +16,8 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
             next();
             return;
         }
-        throw new Error();
+        throw new Error('User is not authenticated.');
     } catch (err) {
-        res.status(401).send('User is not authenticated.');
+        res.status(401).json({error: 'User is not authenticated.'});
     }
 }

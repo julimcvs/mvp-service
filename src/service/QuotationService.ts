@@ -32,10 +32,11 @@ export default class QuotationService {
             .map((detail) => detail.subtotal)
             .reduce((previousValue, currentValue) => previousValue + currentValue);
         await quotation.save();
-        return {
+        return res.status(200).json({
+            message: 'Item added successfully!',
             id: quotation.id,
-            totalAmount: quotation.totalAmount
-        };
+            totalAmount: `R$${quotation.totalAmount.toFixed(2)}`
+        });
     }
 
     async findById(id: number, res: Response) {
@@ -43,7 +44,7 @@ export default class QuotationService {
         if (quotation) {
             return quotation;
         }
-        res.status(400).send(new Error('Quotation not found.'));
+        res.status(400).json({error: 'Quotation not found.'});
         throw new Error('Quotation not found.')
     }
 
@@ -66,10 +67,11 @@ export default class QuotationService {
             .map((detail) => detail.subtotal)
             .reduce((previousValue, currentValue) => previousValue + currentValue);
         await quotation.save();
-        return {
+        return res.status(200).json({
+            message: 'Quotation successful!',
             id: quotation.id,
-            totalAmount: quotation.totalAmount
-        };
+            totalAmount: `R$${quotation.totalAmount.toFixed(2)}`
+        });
     }
 
     private getQuotationDetail(quotation: Quotation, product: any, savedProduct: Product) {

@@ -39,7 +39,7 @@ export default class ProductService {
         if (product) {
             return product;
         }
-        res.status(400).send(new Error("Product not found."));
+        res.status(400).json({error: "Product not found."});
         throw new Error("Product not found.");
     }
 }

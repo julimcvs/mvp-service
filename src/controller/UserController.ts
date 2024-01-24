@@ -5,18 +5,24 @@ export default class UserController {
     private userService = new UserService();
 
     login = async (req: Request, res: Response) => {
-        const token = await this.userService.login(req, res);
-        res.status(200).json({
-            message: "Login successful",
-            token: token,
-        });
+        try {
+            await this.userService.login(req, res);
+        } catch (error: any) {
+            console.error(error.stack);
+            if (!res.headersSent) {
+                res.status(500).json({ error: 'Login error.' });
+            }
+        }
     }
 
     register = async (req: Request, res: Response) => {
-        const user = await this.userService.register(req, res);
-        res.status(201).json({
-            message: "User created successfully",
-            user: user,
-        });
+        try {
+            await this.userService.register(req, res);
+        } catch (error) {
+            console.error(error);
+            if (!res.headersSent) {
+                res.status(500).json({ error: 'Register error.' });
+            }
+        }
     }
 }

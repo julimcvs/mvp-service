@@ -17,12 +17,12 @@ app.use(
     })
 );
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error(err);
-    res.status(500).send({ error: { message: "Something went wrong" }});
-});
-
 app.use(mainRouter);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(err.message);
+    res.status(500).json({ error: { message: "Something went wrong" }});
+});
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);

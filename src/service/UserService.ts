@@ -13,7 +13,7 @@ export default class UserService {
         if (user) {
             return user;
         }
-        res.status(400).send("User not found");
+        res.status(400).json({error: "User not found"});
         throw new Error("User not found");
     }
 
@@ -24,17 +24,21 @@ export default class UserService {
         if (existingUser) {
             const isPasswordMatched = await bcrypt.compare(body.password, existingUser.password);
             if (!isPasswordMatched) {
-                res.status(400).send(new Error("Wrong password"));
-                throw new Error("Wrong password");
+                res.status(400).json({error: "Wrong password"});
+                throw new Error("Wrong password")
             }
-            return jwt.sign({
+            const token = jwt.sign({
                 id: existingUser.id,
                 email: existingUser.email,
             }, secret, {
                 expiresIn: '2 days'
             });
+            return res.status(200).json({
+                message: "Login successful",
+                token: token,
+            });
         }
-        res.status(400).send(new Error("User not found."));
+        res.status(400).json({error: "User not found."});
         throw new Error("User not found.");
     }
 
@@ -42,17 +46,21 @@ export default class UserService {
         const body = req.body;
         const existingUser = await this.repository.findByEmail(body.email);
         if (existingUser) {
-            res.status(400).send(new Error("User already exists."));
+            res.status(400).json({error: "User already exists."});
             throw new Error("User already exists.");
         }
         const user = new User();
         await this.getUser(user, body);
         await user.save()
-        return {
-            id: user.id,
-            name: user.name,
-            email: user.email
-        };
+        return res.status(201).json({
+            message: "User created successfully",
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email
+            }
+        });
+
     }
 
     private getAddress = (address: any) => {
