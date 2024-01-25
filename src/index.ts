@@ -1,12 +1,14 @@
 import express, {Express, NextFunction, Request, Response} from "express";
-import { AppDataSource } from "./data-source"
+import {AppDataSource} from "./data-source"
 import dotenv from "dotenv";
 import mainRouter from './routes/routes';
 import bodyParser from "body-parser";
 
+import cors from 'cors';
+
 const app: Express = express();
 
-const port = process.env.PORT ?? 3000;
+const port = process.env.PORT ?? 8080;
 
 dotenv.config();
 
@@ -17,12 +19,21 @@ app.use(
     })
 );
 
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,OPTIONS,PUT,POST,DELETE',
+    credentials: true,
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
+    maxAge: 86400,
+}));
+
 app.use(mainRouter);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(err.message);
-    res.status(500).json({ error: { message: "Something went wrong" }});
+    res.status(500).json({error: {message: "Something went wrong"}});
 });
+
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);

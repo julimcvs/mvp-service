@@ -13,10 +13,12 @@ const router: Router = express.Router();
 
 // Products
 const productController = new ProductController();
-router.get("/products", async (req: Request, res: Response) => {
+router.post("/products", async (req: Request, res: Response) => {
     await productController.findPaginate(req, res);
 })
-
+router.get("/products/:id", async (req: Request, res: Response) => {
+    await productController.findById(req, res);
+})
 
 // Purchase
 const purchaseController = new PurchaseController();

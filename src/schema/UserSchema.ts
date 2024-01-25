@@ -25,7 +25,7 @@ export default class UserSchema {
             }),
             email: Type.String({minLength: 0, maxLength: 100}),
             password: Type.String({minLength: 0, maxLength: 100}),
-            age: Type.Number({minimum: 1, maximum: 100}),
+            age: Type.String({minLength: 1, maxLength: 3}),
             cpf: Type.String({minLength: 0, maxLength: 11}),
             name: Type.String({minLength: 0, maxLength: 100}),
         })
