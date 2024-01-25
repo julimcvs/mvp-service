@@ -1,5 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, BaseEntity} from "typeorm"
-import {User} from "./User";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany, BaseEntity} from "typeorm"
 import {QuotationDetail} from "./QuotationDetail";
 
 @Entity()
@@ -13,12 +12,6 @@ export class Quotation extends BaseEntity {
 
     @Column()
     totalAmount: number
-
-    @ManyToOne(() => User,
-        () => Quotation,
-        {lazy: true, nullable: true})
-    @JoinColumn({name: 'userId', referencedColumnName: 'id'})
-    user?: User;
 
     @OneToMany(() => QuotationDetail,
         quotationDetails => quotationDetails.quotation,

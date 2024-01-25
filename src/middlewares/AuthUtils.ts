@@ -7,12 +7,11 @@ export interface CustomRequest extends Request {
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const secret = process.env.JWT_SECRET ?? 'secret'
+        const secret = process.env.JWT_SECRET ?? 'S3MPR31NT3RN3T'
         const token = req.header('Authorization')?.replace('Bearer', '').trim();
 
         if (token) {
-            const decoded = jwt.verify(token, secret);
-            (req as CustomRequest).token = decoded;
+            (req as CustomRequest).token = jwt.verify(token, secret);
             next();
             return;
         }

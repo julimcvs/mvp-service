@@ -5,9 +5,8 @@ export default class QuotationSchema {
         body: Type.Object({
             product: Type.Object({
                 id: Type.Number(),
-                quantity: Type.Number({minimum: 0, maximum: 9999}),
+                quantity: Type.String(),
             }),
-            id: Type.Number()
         })
     };
 

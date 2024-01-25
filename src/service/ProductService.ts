@@ -38,13 +38,24 @@ export default class ProductService {
         paginateQuery.sortDirection = query.sortDirection;
         paginateQuery.sortField = query.sortField;
         const products: PaginateProjection = await this.repository.findPaginate(paginateQuery);
-        products.content.forEach(product => {
+        this.setBase64ImageProduct(products.content);
+        return res.status(200).json(products)
+    }
+
+    findProductsByQuotationId = async (req: Request, res: Response) => {
+        const quotationId = Number(req.params.id);
+        const products = await this.repository.findProductsByQuotationId(quotationId);
+        this.setBase64ImageProduct(products);
+        return res.status(200).json(products);
+    }
+
+    private setBase64ImageProduct(products: any[]) {
+        products.forEach(product => {
             product.price = `R$${product.price.toFixed(2)}`;
             const byteArray: any[] = Array.from(product.image);
             const base64String = btoa(byteArray.map(charCode => String.fromCharCode(charCode)).join(''));
             product.image = base64String;
         });
-        return res.status(200).json(products)
     }
 
     private validateQuery = (query: any) => {

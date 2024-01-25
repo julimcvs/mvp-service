@@ -3,7 +3,7 @@ import { Type } from '@sinclair/typebox';
 export default class PurchaseSchema {
     checkout = {
         body: Type.Object({
-            quotationId: Type.Number()
+            quotationId: Type.String()
         })
     };
 }

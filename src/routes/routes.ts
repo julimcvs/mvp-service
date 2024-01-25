@@ -19,6 +19,9 @@ router.post("/products", async (req: Request, res: Response) => {
 router.get("/products/:id", async (req: Request, res: Response) => {
     await productController.findById(req, res);
 })
+router.get("/products/quotation/:id", async (req: Request, res: Response) => {
+    await productController.findProductsByQuotationId(req, res);
+})
 
 // Purchase
 const purchaseController = new PurchaseController();
@@ -46,6 +49,10 @@ router.post("/quotation", validateRequest(quotationSchema.quotation), async (req
 
 router.post("/quotation/add", validateRequest(quotationSchema.addItem), async (req: Request, res: Response) => {
     await quotationController.addItem(req, res);
+})
+
+router.get("/quotation/:id", async (req: Request, res: Response) => {
+    await quotationController.findQuotationById(req, res);
 })
 
 export default router;

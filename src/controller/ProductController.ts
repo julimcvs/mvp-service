@@ -26,4 +26,14 @@ export default class ProductController {
         }
     }
 
+    findProductsByQuotationId = async (req: Request, res: Response) => {
+        try {
+            await this.service.findProductsByQuotationId(req, res)
+        } catch (error: any) {
+            console.error(error.stack);
+            if (!res.headersSent) {
+                res.status(500).json({error: "Error listing products."});
+            }
+        }
+    }
 }

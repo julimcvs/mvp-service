@@ -16,6 +16,18 @@ export default class QuotationController {
 
     }
 
+    findQuotationById = async (req: Request, res: Response) => {
+        try {
+            await this.service.findQuotationById(req, res);
+        } catch (error: any) {
+            console.error(error.stack);
+            if (!res.headersSent) {
+                res.status(500).json({error: "Error getting quotation."})
+            }
+        }
+
+    }
+
     quotation = async (req: Request, res: Response) => {
         try {
             await this.service.quotation(req, res);
@@ -26,5 +38,4 @@ export default class QuotationController {
             }
         }
     }
-
 }

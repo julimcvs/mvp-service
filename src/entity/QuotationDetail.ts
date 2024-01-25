@@ -18,7 +18,7 @@ export class QuotationDetail {
     productId: number
 
     @ManyToOne(() => Product,
-        () => QuotationDetail,
+        product => product.quotationDetails,
         {lazy: true})
     @JoinColumn({name: 'productId', referencedColumnName: 'id'})
     product: Product;

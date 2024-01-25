@@ -39,6 +39,13 @@ export default class QuotationService {
         });
     }
 
+    async findQuotationById(req: Request, res: Response) {
+        const id = Number(req.params.id);
+        const quotation: any = await this.findById(id, res);
+        quotation.totalAmount = `R$${quotation.totalAmount.toFixed(2)}`;
+        return res.status(200).json(quotation);
+    }
+
     async findById(id: number, res: Response) {
         const quotation = await this.repository.findById(id);
         if (quotation) {
@@ -67,7 +74,8 @@ export default class QuotationService {
             .map((detail) => detail.subtotal)
             .reduce((previousValue, currentValue) => previousValue + currentValue);
         await quotation.save();
-        return res.status(200).json({
+        return res.status(200).json
+        ({
             message: 'Quotation successful!',
             id: quotation.id,
             totalAmount: `R$${quotation.totalAmount.toFixed(2)}`
