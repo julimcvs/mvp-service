@@ -1,18 +1,18 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express, {Express, NextFunction, Request, Response} from "express";
 import {AppDataSource} from "./data-source"
-import dotenv from "dotenv";
 import mainRouter from './routes/routes';
 import bodyParser from "body-parser";
-
 import cors from 'cors';
 
 const app: Express = express();
 
-const port = process.env.PORT ?? 8080;
-
-dotenv.config();
+const port = process.env.PORT;
 
 app.use(bodyParser.json())
+
 app.use(
     bodyParser.urlencoded({
         extended: true,

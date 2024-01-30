@@ -15,6 +15,6 @@ export class Quotation extends BaseEntity {
 
     @OneToMany(() => QuotationDetail,
         quotationDetails => quotationDetails.quotation,
-        {lazy: true, cascade: ["insert", "update"]})
+        {cascade: ["insert", "update"]})
     quotationDetails: QuotationDetail[];
 }

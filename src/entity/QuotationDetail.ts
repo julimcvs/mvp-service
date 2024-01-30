@@ -24,8 +24,8 @@ export class QuotationDetail {
     product: Product;
 
     @ManyToOne(() => Quotation,
-        () => QuotationDetail,
-        {lazy: true, orphanedRowAction: "delete"})
+        quotation => quotation.quotationDetails,
+        {lazy: true, cascade: ["insert"], orphanedRowAction: "delete"})
     @JoinColumn({name: 'quotationId', referencedColumnName: 'id'})
     quotation: Quotation;
 }

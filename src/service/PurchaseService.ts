@@ -26,10 +26,11 @@ export default class PurchaseService {
         });
         purchase.purchaseDate = new Date();
         purchase.totalAmount = quotation.totalAmount;
+        purchase.userId = user.id;
         purchase.user = user;
         quotation.status = QuotationStatusEnum.FINISHED;
-        await quotation.save();
         await purchase.save();
+        await quotation.save();
         return res.status(200).json({
             message: 'Checkout successful!',
             id: purchase.id,

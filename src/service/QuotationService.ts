@@ -18,14 +18,9 @@ export default class QuotationService {
         if (body.id) {
             quotation = await this.findById(body.id, res);
         }
-        const savedProduct = await this.productService.findById(product.id, res);
-        const quotationDetail = this.getQuotationDetail(quotation, product, savedProduct);
-        let quotationDetails = await quotation.quotationDetails;
-        const index = quotationDetails.findIndex(detail => detail.productId === product.id);
-        if (index !== -1) {
-            quotationDetails.splice(index, 1);
-        }
-        quotationDetails.push(quotationDetail);
+        const savedProduct: Product = await this.productService.findById(product.id, res);
+        const quotationDetail: QuotationDetail = this.getQuotationDetail(quotation, product, savedProduct);
+        let quotationDetails: QuotationDetail[] = await this.getQuotationDetails(quotation, product, quotationDetail);
         quotation.quotationDetails = quotationDetails;
         quotation.status = QuotationStatusEnum.STARTED;
         quotation.totalAmount = quotationDetails
@@ -74,8 +69,7 @@ export default class QuotationService {
             .map((detail) => detail.subtotal)
             .reduce((previousValue, currentValue) => previousValue + currentValue);
         await quotation.save();
-        return res.status(200).json
-        ({
+        return res.status(200).json({
             message: 'Quotation successful!',
             id: quotation.id,
             totalAmount: `R$${quotation.totalAmount.toFixed(2)}`
@@ -85,6 +79,7 @@ export default class QuotationService {
     private getQuotationDetail(quotation: Quotation, product: any, savedProduct: Product) {
         const quotationDetail: QuotationDetail = new QuotationDetail();
         quotationDetail.quotation = quotation;
+        quotationDetail.productId = product.id;
         quotationDetail.product = product;
         if ([ProductTypeEnum.SERVICE, ProductTypeEnum.COMBO].includes(savedProduct.type)) {
             quotationDetail.quantity = 1;
@@ -93,5 +88,15 @@ export default class QuotationService {
         }
         quotationDetail.subtotal = (quotationDetail.quantity * savedProduct.price);
         return quotationDetail;
+    }
+
+    private async getQuotationDetails(quotation: Quotation, product: any, quotationDetail: QuotationDetail) {
+        let quotationDetails = quotation.quotationDetails ?? [];
+        const index = quotationDetails.findIndex(detail => detail.productId === product.id);
+        if (index !== -1) {
+            quotationDetails.splice(index, 1);
+        }
+        quotationDetails.push(quotationDetail);
+        return quotationDetails;
     }
 }
