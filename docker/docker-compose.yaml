@@ -9,3 +9,20 @@ services:
       POSTGRES_USER: "mvp"
       POSTGRES_PASSWORD: "mvp"
       POSTGRES_DB: "mvp"
+
+  mvp-service:
+    image: "mvp-service:latest"
+    ports:
+      - "8080:8080"
+    restart: no
+    build:
+      context: mvp-service
+      dockerfile: ./Dockerfile
+    depends_on:
+      - postgres-mvp
+    environment:
+      DATABASE_HOST: postgres-mvp
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: mvp
+      DATABASE_PASSWORD: mvp
+      DATABASE_NAME: mvp

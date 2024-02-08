@@ -1,4 +1,4 @@
-FROM node:18 AS dev
+FROM node:18-alpine AS dev
 WORKDIR /home/node/app
 COPY package*.json .
 RUN npm i
